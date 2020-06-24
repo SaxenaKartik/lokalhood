@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '479ht!6i9ohsby6*e(p+@5=2k8x2u=i5thr2@8wg1clb1fak*s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
 ALLOWED_HOSTS = []
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'lokalhood_api',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = "lokalhood_api.UserProfile"
+
+STATIC_ROOT = 'static/'
