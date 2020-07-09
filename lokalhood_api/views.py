@@ -39,6 +39,24 @@ class RequestViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     serializer_class = serializers.RequestSerializer
     queryset = models.Request.objects.all()
+
+    def list(self, request):
+        queryset = models.Request.objects.all()
+        rid = request.query_params.get('rid', None)
+        user = request.query_params.get('user', None)
+        shop = request.query_params.get('shop', None)
+        if rid is not None:
+            queryset = queryset.filter(id = rid)
+        if user is not None:
+            queryset = queryset.filter(user = user)
+        if shop=="null":
+            queryset = queryset.filter(shop = None)
+        elif shop is not None:
+            queryset = queryset.filter(shop = shop)
+        serializer = serializers.RequestSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
     permission_classes = (permissions.UpdateOwnRequest,IsAuthenticatedOrReadOnly,)
     filter_backends = (filters.SearchFilter, )
     search_fields = ('id', 'deliver_addr', 'items' ,)
