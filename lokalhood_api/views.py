@@ -21,6 +21,16 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
+
+    def list(self, request):
+        queryset = models.UserProfile.objects.all()
+        phone = request.query_params.get('phone', None)
+        if phone is not None:
+            phone = "+91" + phone
+            queryset = queryset.filter(phone_no = phone)
+        serializer = serializers.UserProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter, )
     search_fields = ('id', 'name', 'email', 'phone_no',)
