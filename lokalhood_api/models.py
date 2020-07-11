@@ -63,7 +63,7 @@ class Shop(models.Model):
 class Request(models.Model):
     """ Model for a request """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True)
+    shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True, blank = True)
     items = models.CharField(max_length = 500)
     deliver_addr = models.CharField(max_length = 500)
     details = models.CharField(max_length = 500, null = True)
